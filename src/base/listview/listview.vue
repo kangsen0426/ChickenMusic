@@ -17,6 +17,7 @@
         <h2 class="list-group-title">{{ group.title }}</h2>
         <uL>
           <li
+          @click="selectItem(item)"
             v-for="item in group.items"
             :key="item.id"
             class="list-group-item"
@@ -201,6 +202,9 @@ export default {
         this.listHeight.push(height);
       }
     },
+    selectItem(item){
+        this.$emit('select',item)
+    }
   },
 };
 </script>

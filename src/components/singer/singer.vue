@@ -1,8 +1,8 @@
 <template>
   <div class="singer" ref="singer">
 
-    <list-view :data="singerList"></list-view>
-
+    <list-view @select="selectSinger" :data="singerList"></list-view>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -12,6 +12,8 @@ import { pinyin } from "pinyin-pro";
 import { getSingerList } from "../../api/singer";
 
 import ListView from '../../base/listview/listview.vue'
+
+import {mapMutations} from 'vuex'
 
 const HOT_SINGER_LEN = 10; //热门歌手的个数
 const HOT_NAME = "热门歌手";
@@ -29,6 +31,17 @@ export default {
     ListView
   },
   methods: {
+    ...mapMutations({
+      setSinger:'SET_SINGER'
+    }),
+
+    selectSinger(singer){
+      this.$router.push({
+        path: `/singer/${singer.id}`
+      })
+
+      this.setSinger(singer)
+    },
     _getSingerList() {
       getSingerList().then((res) => {
         if (res.status === 200) {
@@ -59,7 +72,7 @@ export default {
 
       this.singerList = this._normalizeSinger(arr)
 
-      console.log(this.singerList);
+      // console.log(this.singerList);
     },
     _normalizeSinger(list) {
       let map = {
