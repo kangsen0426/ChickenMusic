@@ -8,6 +8,7 @@ const state = {
     sequenceList:[],//音乐播放的顺序列表
     mode:playMode.sequence, //播放模式
     currentIndex:-1,//当前播放的索引
+    currentSong:{}
 }
 
 

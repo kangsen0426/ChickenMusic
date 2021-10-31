@@ -27,5 +27,6 @@ export const currentIndex = state =>{
 }
 
 export const currentSong = state =>{
-    return state.playList[state.currentIndex] || {}
+    return  state.currentSong
 }
+

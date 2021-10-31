@@ -23,7 +23,7 @@
       ref="list"
     >
       <div class="song-list-wrapper">
-        <song-list :songs="songs"></song-list>
+        <song-list @select="selectItem" :songs="songs"></song-list>
       </div>
       <div v-show="!songs.length" class="loading-container">
         <loading></loading>
@@ -36,6 +36,8 @@
 import Scroll from "../../base/scroll/scroll.vue";
 import SongList from "../../base/song-list/song-list.vue";
 import Loading from "../../base/loading/loading.vue";
+
+import {mapActions} from 'vuex'
 
 // import {prefixStyle} from '../../common/js/dom'
 
@@ -89,7 +91,19 @@ export default {
     },
     back(){
         this.$router.back()
-    }
+    },
+    selectItem(item,index){
+
+        // console.log(item,index);
+
+        this.selectPlay({
+            list:this.songs,
+            index
+        })
+    },
+    ...mapActions([
+        'selectPlay'
+    ])
   },
   watch: {
     scrollY(newY) {
