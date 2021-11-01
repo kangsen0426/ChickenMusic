@@ -30,3 +30,8 @@ export const currentSong = state =>{
     return  state.currentSong
 }
 
+
+export const minplay = state =>{
+    return  state.minplay
+}
+

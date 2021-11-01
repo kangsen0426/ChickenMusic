@@ -31,6 +31,10 @@ const matutations = {
         // console.log(data);
         state.currentSong = data.list[data.index]
     },
+
+    [types.SET_MIN_PLAY](state) {
+        state.minplay = true;
+    },
 }
 
 

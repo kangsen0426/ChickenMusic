@@ -1,7 +1,7 @@
 <template>
-  <div class="singer" ref="singer">
+  <div class="singer" ref="singer" :class="minplay">
 
-    <list-view @select="selectSinger" :data="singerList"></list-view>
+    <list-view @select="selectSinger" :data="singerList" ref="list"></list-view>
     <router-view></router-view>
   </div>
 </template>
@@ -24,6 +24,20 @@ export default {
       singerList: [], //热门歌手列表
     };
   },
+  computed:{
+     minplay(){
+
+        // console.log(this.$store.state.minplay);
+        
+        let state = this.$store.state.minplay
+
+        if(state){
+          this.setBottomHeight()
+        }
+
+      return ''
+    }
+  },
   created() {
     this._getSingerList();
   },
@@ -34,7 +48,24 @@ export default {
     ...mapMutations({
       setSinger:'SET_SINGER'
     }),
+     setBottomHeight(){
 
+      //  console.log('111');
+        
+               let play = this.$store.state.minplay
+
+
+
+        // console.log(this.$store.state.playList);
+
+        const bottom = play ? '60px' : ''
+
+        console.log(this.$refs.list);
+
+        this.$refs.singer.style.bottom = bottom
+        this.$refs.list.refresh()
+
+    },
     selectSinger(singer){
       this.$router.push({
         path: `/singer/${singer.id}`

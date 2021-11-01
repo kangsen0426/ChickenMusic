@@ -16,7 +16,7 @@
           </slider>
         </div>
         <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
+          <h1 class="list-title" :class="minplay">热门歌单推荐</h1>
           <ul>
             <li v-for="item in discList" :key="item.id" class="item">
               <div class="icon">
@@ -67,7 +67,40 @@ export default {
     this._getRecommend();
     this._getDiscList();
   },
+  computed:{
+      minplay(){
+
+        // console.log(this.$store.state.minplay);
+        
+        // let state = this.$store.state.minplay
+
+        // if(state){
+        //   this.setBottomHeight()
+        // }
+
+      return ''
+    }
+  },
   methods: {
+     setBottomHeight(){
+
+      //  console.log('111');
+        
+                let play = this.$store.state.minplay
+
+
+
+        // console.log(this.$store.state.playList);
+
+        const bottom = play  ? '60px' : ''
+
+
+        this.$refs.recommend.style.bottom = bottom
+
+
+        this.$refs.scroll.refresh()
+
+    },
     _getRecommend() {
       // getRecommend().then((res)=>{
       //   if(res.code === ERR_OK){

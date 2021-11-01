@@ -12,3 +12,9 @@ export function getSongUrl(id){
     
 }
 
+export function getSongLyric(id){
+
+    return axios.get(`/lyric?id=${id}`)
+    
+}
+

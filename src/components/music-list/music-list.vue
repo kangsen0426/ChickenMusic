@@ -6,7 +6,7 @@
     <h1 class="title" v-html="title"></h1>
     <div class="bg-image" :style="bgStyle" ref="bgImage">
       <div class="play-wrapper">
-        <div ref="playBtn"  v-show="songs.length > 0" class="play">
+        <div ref="playBtn" @click="random"  v-show="songs.length > 0" class="play">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
@@ -22,10 +22,10 @@
       class="list"
       ref="list"
     >
-      <div class="song-list-wrapper">
+      <div class="song-list-wrapper" >
         <song-list @select="selectItem" :songs="songs"></song-list>
       </div>
-      <div v-show="!songs.length" class="loading-container">
+      <div v-show="!songs.length" class="loading-container" :class="minplay">
         <loading></loading>
       </div>
     </scroll>
@@ -37,6 +37,11 @@ import Scroll from "../../base/scroll/scroll.vue";
 import SongList from "../../base/song-list/song-list.vue";
 import Loading from "../../base/loading/loading.vue";
 
+
+import {mapGetters} from 'vuex'
+
+// import {playlistMixin} from '../../common/js/mixin'
+
 import {mapActions} from 'vuex'
 
 // import {prefixStyle} from '../../common/js/dom'
@@ -47,6 +52,7 @@ const RESERVEO_HEIGHT = 40;
 // const backdrop = prefixStyle('backdrop-filter')
 
 export default {
+  // mixins:[playlistMixin], 
   props: {
     bgImage: {
       type: String,
@@ -74,17 +80,57 @@ export default {
     bgStyle() {
       return `background-image:url(${this.bgImage})`;
     },
+    minplay(){
+
+        // console.log(this.$store.state.minplay);
+        
+        let state = this.$store.state.minplay
+
+        if(state){
+          this.setBottomHeight()
+        }
+
+      return ''
+    }
+    // ...mapGetters([
+    //     'minplay'
+    // ])
   },
   mounted() {
     this.imageHeight = this.$refs.bgImage.clientHeight;
     this.minTranslateY = -this.imageHeight + RESERVEO_HEIGHT;
     this.$refs.list.$el.style.top = `${this.imageHeight}px`;
+
+    // this.setBottomHeight()
+
   },
   created() {
     this.probeType = 3;
     this.listenScroll = true;
   },
   methods: {
+    setBottomHeight(){
+
+      //  console.log('111');
+        
+        let play = this.$store.state.minplay
+
+
+        // console.log(this.$store.state.playList);
+
+        const bottom = play  ? '60px' : ''
+
+        console.log(this.$refs.list);
+
+        this.$refs.list.$el.style.bottom = bottom
+        this.$refs.list.refresh()
+
+    },
+    random(){
+      this.randomPlay({
+        list:this.songs
+      })
+    },
     scroll(pos) {
       // console.log(pos.y);
       this.scrollY = pos.y;
@@ -100,12 +146,17 @@ export default {
             list:this.songs,
             index
         })
+
+
     },
     ...mapActions([
-        'selectPlay'
+        'selectPlay',
+        'randomPlay',        
     ])
+  
   },
   watch: {
+    
     scrollY(newY) {
       //最远向上顶一个图片封面的高度
       let translateY = Math.max(this.minTranslateY, newY);

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
 
 import { getSingerDetail } from "../../api/singer";
 
