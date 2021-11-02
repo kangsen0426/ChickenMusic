@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       scrollY: 0,
+      onPage:false
     };
   },
   computed: {
@@ -81,6 +82,8 @@ export default {
       return `background-image:url(${this.bgImage})`;
     },
     minplay(){
+
+      if(!this.onPage) return
 
         // console.log(this.$store.state.minplay);
         
@@ -102,6 +105,8 @@ export default {
     this.$refs.list.$el.style.top = `${this.imageHeight}px`;
 
     // this.setBottomHeight()
+
+    this.onPage = true
 
   },
   created() {
@@ -136,6 +141,7 @@ export default {
       this.scrollY = pos.y;
     },
     back(){
+      this.onPage = false
         this.$router.back()
     },
     selectItem(item,index){

@@ -198,7 +198,7 @@ export default {
       return this.$store.state.fullScreen;
     },
     currentSong() {
-      // console.log(this.$store.state.currentSong);
+      // console.log(this.$store.state);
 
       this.getSongData(this.$store.state.currentSong.id);
 

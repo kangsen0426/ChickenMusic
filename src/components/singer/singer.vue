@@ -22,11 +22,16 @@ export default {
   data() {
     return {
       singerList: [], //热门歌手列表
+      onPage:false
     };
+  },
+  mounted(){
+    this.onPage = true
   },
   computed:{
      minplay(){
 
+       if(!this.onPage) return
         // console.log(this.$store.state.minplay);
         
         let state = this.$store.state.minplay

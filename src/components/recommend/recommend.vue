@@ -16,9 +16,9 @@
           </slider>
         </div>
         <div class="recommend-list">
-          <h1 class="list-title" :class="minplay">热门歌单推荐</h1>
+          <h1 class="list-title">热门歌单推荐</h1>
           <ul>
-            <li v-for="item in discList" :key="item.id" class="item">
+            <li v-for="item in discList" :key="item.id" @click="selectItem(item)" class="item">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.picUrl" />
               </div>
@@ -74,9 +74,12 @@ export default {
         
         // let state = this.$store.state.minplay
 
-        // if(state){
+
+        // console.log(state);
+
+       
         //   this.setBottomHeight()
-        // }
+      
 
       return ''
     }
@@ -86,20 +89,28 @@ export default {
 
       //  console.log('111');
         
-                let play = this.$store.state.minplay
+      //  let play = this.$store.state.minplay
 
 
 
-        // console.log(this.$store.state.playList);
 
-        const bottom = play  ? '60px' : ''
+      //   const bottom = play  ? '60px' : ''
 
+      //   if(!play){
+      //     return
+      //   }
 
-        this.$refs.recommend.style.bottom = bottom
+      //   this.$refs.recommend.style.bottom = bottom
 
 
         this.$refs.scroll.refresh()
 
+    },
+    selectItem(item){
+      // console.log(item);
+      this.$router.push({
+        path:`/recommend/${item.id}`
+      })
     },
     _getRecommend() {
       // getRecommend().then((res)=>{
@@ -157,6 +168,7 @@ export default {
   top: 88px;
   bottom: 0;
 
+
   .recommend-content {
     height: 100%;
     overflow: hidden;
@@ -168,6 +180,8 @@ export default {
     }
 
     .recommend-list {
+    padding-bottom: 60px;
+
       .list-title {
         height: 65px;
         line-height: 65px;
