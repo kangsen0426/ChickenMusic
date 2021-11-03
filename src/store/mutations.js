@@ -35,6 +35,10 @@ const matutations = {
     [types.SET_MIN_PLAY](state) {
         state.minplay = true;
     },
+
+    [types.SET_SEARCH_HISTORY](state,history) {
+        state.searchHistory = history;
+    },
 }
 
 

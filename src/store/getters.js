@@ -35,3 +35,7 @@ export const minplay = state =>{
     return  state.minplay
 }
 
+export const searchHistory = state =>{
+    return  state.searchHistory
+}
+

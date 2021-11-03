@@ -13,6 +13,8 @@ import { getSingerList } from "../../api/singer";
 
 import ListView from '../../base/listview/listview.vue'
 
+
+
 import {mapMutations} from 'vuex'
 
 const HOT_SINGER_LEN = 10; //热门歌手的个数
