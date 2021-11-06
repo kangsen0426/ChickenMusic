@@ -22,3 +22,5 @@ export const SET_MIN_PLAY = 'SET_MIN_PLAY'
 
 
 export const SET_SEARCH_HISTORY = 'SET_SEARCH_HISTORY'
+
+export const SET_PLAY_HISTORY = 'SET_PLAY_HISTORY'

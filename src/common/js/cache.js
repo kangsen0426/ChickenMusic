@@ -58,3 +58,16 @@ export function clearSearch() {
 export function loadSearch() {
   return storage.get(SEARCH_KEY, [])
 }
+
+export function savePlay(song) {
+  let songs = storage.get(PLAY_KEY, [])
+  insertArray(songs, song, (item) => {
+    return song.id === item.id
+  }, PLAY_MAX_LEN)
+  storage.set(PLAY_KEY, songs)
+  return songs
+}
+
+export function loadPlay() {
+  return storage.get(PLAY_KEY, [])
+}

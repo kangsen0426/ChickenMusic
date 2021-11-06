@@ -39,3 +39,5 @@ export const searchHistory = state =>{
     return  state.searchHistory
 }
 
+export const playHistory = state => state.playHistory
+

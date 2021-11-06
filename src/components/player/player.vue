@@ -136,12 +136,12 @@
             ></i>
           </progress-circle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
-
+      <play-list ref="playlist"></play-list>
     <audio
       ref="audio"
       :src="songUrl"
@@ -158,12 +158,14 @@ import animations from "create-keyframe-animation";
 
 import lyricPaser from "lyric-parser";
 
-import { mapGetters, mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 import { getSongDetail, getSongUrl, getSongLyric } from "../../api/song";
 
 import ProgressBar from "../../base/progress-bar/progress-bar.vue";
 import ProgressCircle from "../../base/progress-circle/progress-circle.vue";
+
+import playList from '../playlist/playlist.vue'
 
 import Scroll from "../../base/scroll/scroll.vue";
 
@@ -189,6 +191,7 @@ export default {
     ProgressBar,
     ProgressCircle,
     Scroll,
+    playList
   },
   computed: {
     playList() {
@@ -199,8 +202,9 @@ export default {
     },
     currentSong() {
       // console.log(this.$store.state);
-
-      this.getSongData(this.$store.state.currentSong.id);
+     
+  let id  =this.$store.state.currentSong ? this.$store.state.currentSong.id : ''
+      this.getSongData(id);
 
       return this.$store.state.currentSong;
     },
@@ -325,6 +329,12 @@ export default {
     //   this.touch.startX = touch.pageX
     //   this.touch.startY = touch.pageY
     // },
+    showPlaylist(){
+
+      // console.log("kkk");
+
+      this.$refs.playlist.show()
+    },
     middleTouchStart(e) {
       this.touch.initiated = true;
       // 用来判断是否是一次移动
@@ -471,6 +481,7 @@ export default {
     },
     ready() {
       this.songReady = true;
+      this.savePlayHistory(this.currentSong)
     },
     error() {
       this.songReady = true;
@@ -741,6 +752,9 @@ export default {
       setPlayList: "SET_PLAYLIST",
       setMinPlay:'SET_MIN_PLAY'
     }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
 };
 </script>
