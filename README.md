@@ -23,7 +23,7 @@ npm run dev
 
 ##### 接口
 
-[网易云api NodeJS版]: https://neteasecloudmusicapi.vercel.app/#/?id=neteasecloudmusicapi
+网易云api NodeJS版：https://neteasecloudmusicapi.vercel.app/#/?id=neteasecloudmusicapi
 
 
 
