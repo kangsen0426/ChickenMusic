@@ -25,7 +25,7 @@
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{ item.name }}</span>
               <span @click.stop="toggleFavorite(item)" class="like">
-                <!-- <i :class="getFavoriteIcon(item)"></i> -->
+                <i :class="getFavoriteIcon(item)"></i>
               </span>
               <span @click.stop="deleteOne(item)" class="delete">
                 <i class="icon-delete"></i>
@@ -85,7 +85,7 @@ export default {
         ? "icon-loop"
         : "icon-random";
     },
-    ...mapGetters(["sequenceList", "currentSong", "playList"]),
+    ...mapGetters(["sequenceList", "currentSong", "playList",'favoriteList']),
   },
   methods: {
     show() {
@@ -176,7 +176,29 @@ export default {
     addSong() {
         this.$refs.addSong.show()
     },
-    ...mapActions(["deleteSong", "deleteSongList"]),
+
+    toggleFavorite(song) {
+      if (this.isFavorite(song)) {
+        this.deleteFavoriteList(song)
+      } else {
+        this.saveFavoriteList(song)
+      }
+    },
+    getFavoriteIcon(song) {
+      if (this.isFavorite(song)) {
+        // console.log('like');
+        return 'icon-favorite'
+      }
+      return 'icon-not-favorite'
+    },
+    isFavorite(song) {
+      const index = this.favoriteList.findIndex((item) => {
+        return item.id === song.id
+      })
+      // console.log(index);
+      return index > -1
+    },
+    ...mapActions(["deleteSong", "deleteSongList","deleteFavoriteList","saveFavoriteList"]),
     ...mapMutations({
       setCurrentIndex: "SET_CURRENT_INDEX",
       setCurrentSong: "SET_CURRENT_SONG",

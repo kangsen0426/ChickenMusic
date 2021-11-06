@@ -27,7 +27,7 @@ const matutations = {
         state.currentIndex = index
     },
 
-    [types.SET_CURRENT_SONG](state,data) {
+    [types.SET_CURRENT_SONG](state, data) {
         // console.log(data);
         state.currentSong = data.list[data.index]
     },
@@ -36,13 +36,16 @@ const matutations = {
         state.minplay = true;
     },
 
-    [types.SET_SEARCH_HISTORY](state,history) {
+    [types.SET_SEARCH_HISTORY](state, history) {
         state.searchHistory = history;
     },
-    
+
     [types.SET_PLAY_HISTORY](state, history) {
         state.playHistory = history
-      },
+    },
+    [types.SET_FAVORITE_LIST](state, list) {
+        state.favoriteList = list
+    }
 }
 
 

@@ -26,7 +26,7 @@
             <i class="icon-back"></i>
           </div>
           <h1 class="title">{{ currentSongBaseInfo.name }}</h1>
-          <h2 class="subtitle">{{ currentSongBaseInfo.singer }}</h2>
+          <h2 class="subtitle">{{ getSinger(currentSongBaseInfo.singer) }}</h2>
         </div>
 
         <div
@@ -102,7 +102,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon " @click="toggleFavorite(currentSongBaseInfo)"  :class="getFavoriteIcon(currentSongBaseInfo)"></i>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ import animations from "create-keyframe-animation";
 
 import lyricPaser from "lyric-parser";
 
-import { mapActions, mapMutations } from "vuex";
+import { mapGetters,mapActions, mapMutations } from "vuex";
 
 import { getSongDetail, getSongUrl, getSongLyric } from "../../api/song";
 
@@ -213,9 +213,7 @@ export default {
     //   return this.$store.state.palying;
     // },
 
-    // ...mapGetters([
-    //     'playing'
-    //   ])
+   
     playIcon() {
       return this.$store.state.playing ? "icon-pause" : "icon-play";
     },
@@ -241,6 +239,9 @@ export default {
         ? "icon-loop"
         : "icon-random";
     },
+     ...mapGetters([
+        'favoriteList'
+      ])
   },
   watch: {
     songUrl() {
@@ -257,78 +258,7 @@ export default {
     this.touch = {};
   },
   methods: {
-    // middleTouchEnd(e){
-    //     if (!this.touch.moved) {
-    //       return
-    //     }
-    //     let offsetWidth
-    //     let opacity
-    //     if (this.currentShow === 'cd') {
-    //       if (this.touch.percent > 0.1) {
-    //         offsetWidth = -window.innerWidth
-    //         opacity = 0
-    //         this.currentShow = 'lyric'
-    //       } else {
-    //         offsetWidth = 0
-    //         opacity = 1
-    //       }
-    //     } else {
-    //       if (this.touch.percent < 0.9) {
-    //         offsetWidth = 0
-    //         this.currentShow = 'cd'
-    //         opacity = 1
-    //       } else {
-    //         offsetWidth = -window.innerWidth
-    //         opacity = 0
-    //       }
-    //     }
-    //     const time = 300
-    //     this.$refs.lyricList.$el.style['transform'] = `translate3d(${offsetWidth}px,0,0)`
-    //     this.$refs.lyricList.$el.style['webkitTransform'] = `translate3d(${offsetWidth}px,0,0)`
-    //     this.$refs.lyricList.$el.style['transitionDuration'] = `${time}ms`
-    //     this.$refs.lyricList.$el.style['webkitTransitionDuration'] = `${time}ms`
-    //     this.$refs.middleL.style.opacity = opacity
-    //     this.$refs.middleL.style['transitionDuration'] = `${time}ms`
-    //     this.$refs.middleL.style['webkitTransitionDuration'] = `${time}ms`
-    //     this.touch.initiated = false
-    // },
-    // middleTouchMove(e){
-    //   if(!this.touch.initiated){
-    //     return
-    //   }
-
-    //  const touch = e.touches[0]
-    //  let  deltaX = touch.pageX - this.touch.startX
-    //  let  deltaY = touch.pageY - this.touch.startY
-
-    //   //滚动歌词时也会造成偏移，判断一下是不是滑动歌词
-    //   if(Math.abs(deltaY) > Math.abs(deltaX)){
-    //     return
-    //   }
-
-    //    if (!this.touch.moved) {
-    //       this.touch.moved = true
-    //     }
-
-    //   const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
-    //     const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
-    //     // this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
-    //     this.$refs.lyricList.$el.style['transform'] = `translate3d(${offsetWidth}px,0,0)`
-    //     this.$refs.lyricList.$el.style['webkitTransform'] = `translate3d(${offsetWidth}px,0,0)`
-    //     this.$refs.lyricList.$el.style['transitionDuration'] = 0
-    //     this.$refs.lyricList.$el.style['webkitTransitionDuration'] = 0
-    //     this.$refs.middleL.style.opacity = 1 - this.touch.percent
-    //     this.$refs.middleL.style['webkitTransitionDuration'] = 0
-
-    // },
-    // middleTouchStart(e){
-    //   this.touch.initiated = true
-    //    // 用来判断是否是一次移动
-    //     this.touch.moved = false
-    //   const touch = e.touches[0]
-    //   this.touch.startX = touch.pageX
-    //   this.touch.startY = touch.pageY
-    // },
+   
     showPlaylist(){
 
       // console.log("kkk");
@@ -644,20 +574,20 @@ export default {
           if (res.data.songs) {
             console.log(res);
 
-            //   console.log(res.data.songs[0]);
+              // console.log(res.data.songs[0]);
 
             let songData = {
               id: id,
               name: res.data.songs[0].name,
               al: res.data.songs[0].al,
-              singer: this.getSinger(res.data.songs[0].ar),
+              singer: res.data.songs[0].ar,
               time: this.formatDuring(res.data.songs[0].dt),
               dt: res.data.songs[0].dt,
             };
 
             this.currentSongBaseInfo = songData;
 
-            // console.log(songData);
+            // console.log(this.currentSongBaseInfo);
           } else {
             console.log(res.statusText);
           }
@@ -706,6 +636,11 @@ export default {
       }
     },
     getSinger(song) {
+
+      if(!song){
+        return
+      }
+
       let songers = [];
 
       for (let i = 0; i < song.length; i++) {
@@ -713,6 +648,32 @@ export default {
       }
 
       return `${songers.join(",")}`;
+    },
+    toggleFavorite(song) {
+
+
+      console.log(song);
+
+
+      if (this.isFavorite(song)) {
+        this.deleteFavoriteList(song)
+      } else {
+        this.saveFavoriteList(song)
+      }
+    },
+    getFavoriteIcon(song) {
+      if (this.isFavorite(song)) {
+        // console.log('like');
+        return 'icon-favorite'
+      }
+      return 'icon-not-favorite'
+    },
+    isFavorite(song) {
+      const index = this.favoriteList.findIndex((item) => {
+        return item.id === song.id
+      })
+      // console.log(index);
+      return index > -1
     },
     handleLyric({ lineNum, txt }) {
       this.currentLineNum = lineNum;
@@ -753,7 +714,9 @@ export default {
       setMinPlay:'SET_MIN_PLAY'
     }),
     ...mapActions([
-      'savePlayHistory'
+      'savePlayHistory',
+      'saveFavoriteList',
+      'deleteFavoriteList'
     ])
   },
 };

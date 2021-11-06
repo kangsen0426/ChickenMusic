@@ -45,12 +45,16 @@ export default {
         }
     },
     getDesc(song) {
+
+      // console.log(song);
+
       let songers = [];
 
       for (let i = 0; i < song.singer.length; i++) {
         songers.push(song.singer[i].name);
       }
 
+      // console.log(songers);
       return `${songers.join(",")} ∘ ${song.al.name}`;
     },
     selectItem(song, index) {
